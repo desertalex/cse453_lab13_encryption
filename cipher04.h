@@ -12,10 +12,10 @@
 class Cipher04 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getPseudoAuth()  { return "Jacob Nelson"; }
+   virtual std::string getCipherName()  { return "Beaufort"; }
+   virtual std::string getEncryptAuth() { return "Jacob Nelson"; }
+   virtual std::string getDecryptAuth() { return "Jacob Nelson"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -23,7 +23,7 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      return std::string("Singh, Simon (2000). The Code Book: The Science of Secrecy from Ancient Egypt to Quantum Cryptography. ISBN 0-385-49532-3.");
    }
    
    /**********************************************************
@@ -34,12 +34,17 @@ public:
    {
       std::string str;
 
-      // TODO: please format your pseudocode
-      // The encrypt pseudocode
-      str =  "insert the encryption pseudocode\n";
+      str =  "Beaufort Cipher\n";
+      str += "GET text to be encoded\n";
+      str += "GET encryption key";
+      str += "CREATE string of alpahabet\n";
+      str += "CREATE encryption string by repeating encrpytion key.";
+      str += "Encryption string determines transposition";
+      str += "CREATE completed string";
 
-      // The decrypt pseudocode
-      str += "insert the decryption pseudocode\n";
+      
+      //Since the encryption is symmetric the encryption pseudocode 
+      //also applies to decryption
 
       return str;
    }
@@ -51,11 +56,32 @@ public:
    virtual std::string encrypt(const std::string & plainText,
                                const std::string & password)
    {
-      std::string cipherText = plainText;
-      // TODO - Add your code here
-      return cipherText;
-   }
-
+      std::string ciphertext;
+      std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for(int i=0; i<plainText.size(); i++){
+         char c0 = plainText[i];
+         char c1 = password[i % password.size()];
+         int start=0;
+         for (int j=0l; j<26; j++){
+            if(alphabet[j] == toupper(c0)){
+                start=j;
+                break;
+            }
+         }
+         int offSet=0;
+         for(int j=start; j<start+26; j++){
+            int letter= j % 26;
+            if(alphabet[letter] == toupper(c1)){
+                break;
+            }
+            offSet++;
+         }
+        ciphertext += alphabet[offSet];
+      }
+      return ciphertext;
+    }
+    
+  
    /**********************************************************
     * DECRYPT
     * TODO: ADD description
@@ -63,10 +89,32 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
+      std::string plainText;
+      std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for(int i=0; i<cipherText.size(); i++){
+         char c0 = cipherText[i];
+         char c1 = password[i % password.size()];
+         int start=0;
+         for (int j=0l; j<26; j++){
+            if(alphabet[j] == toupper(c0)){
+                start=j;
+                break;
+            }
+         }
+         int offSet=0;
+         for(int j=start; j<start+26; j++){
+            int letter= j % 26;
+            if(alphabet[letter] == toupper(c1)){
+                break;
+            }
+            offSet++;
+         }
+         plainText += alphabet[offSet];
+      }
       return plainText;
    }
 };
+    
+
 
 #endif // CIPHER04_H
